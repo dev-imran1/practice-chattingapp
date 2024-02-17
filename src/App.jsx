@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import {
   createRoutesFromElements,
@@ -12,20 +10,22 @@ import Registration from './pages/Registration';
 import Login from './pages/Login';
 
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route>
-      <Route path="/" element={<Registration />}/>
-      <Route path="/login" element={<Login />}/>
-    </Route>
-    ))
+const router = createBrowserRouter([
+  {
+    path:"/", element: <Registration/>
+  },
+  {
+    path:"/login", element: <Login />
+  }
+])
+
 
 function App() {
 
   return (
     <>
-        <RouterProvider router={router}
-  />
+      <RouterProvider router={router}
+      />
     </>
   )
 }
