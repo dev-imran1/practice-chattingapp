@@ -6,8 +6,7 @@ import Google from '../assets/google.png';
 import './reglog.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -21,7 +20,7 @@ const Login = () => {
       <Grid container >
         <Grid item xs={6}>
           <div className='regContainer'>
-            <Heading clasName="header__reg" title="Get started with easily register" />
+            <Heading  clasName="header__reg" title="Get started with easily register" />
             <div>
               <img className='google' src={Google} alt="" />
             </div>
@@ -32,6 +31,7 @@ const Login = () => {
               <TextField id="outlined-basic" label="password" variant="outlined" />
             </div>
             <Button onClick={handelRegistration} variant="contained">Log in</Button>
+            <p><Link to='/'>got to reg page</Link></p>
           </div>
 
         </Grid>

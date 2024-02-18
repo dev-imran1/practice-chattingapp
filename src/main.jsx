@@ -5,5 +5,6 @@ import './index.css'
 import { RouterProvider } from 'react-router-dom'
 import firebaseConfig from './firebaseConfig.js'
 
+
 ReactDOM.createRoot(document.getElementById('root')).render(<App />
 )
