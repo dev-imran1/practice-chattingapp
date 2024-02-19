@@ -34,7 +34,7 @@ const Registration = () => {
   // console.log(error)
 
   let [values, setValues] = useState(initialvalues);
-  let [emailError, setEmailError] = useState("")
+  // let [emailError, setEmailError] = useState("")
 
   const handelChange = (e) => {
 
@@ -49,7 +49,7 @@ const Registration = () => {
     if (!email) {
       setValues({
         ...values,
-        error: "Type Your Email"
+        error: "Type Your email"
       })
       return
     }
@@ -84,7 +84,6 @@ const Registration = () => {
           password: "",
           loading: false
         })
-        setEmailError("");
         navigate("/login")
       })
       .catch((error) => {
