@@ -16,3 +16,11 @@
     cursor: pointer;
     margin-top: 20px;
 }
+.forgot{
+    cursor: pointer;
+    font-size: 20px;
+    color: rgb(6, 232, 6);
+}
+.eye svg{
+    font-size: 25px;
+}

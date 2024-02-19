@@ -9,8 +9,9 @@ import {
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import React from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Forgotpassword from './pages/Forgotpassword';
 
 
 const router = createBrowserRouter([
@@ -19,6 +20,9 @@ const router = createBrowserRouter([
   },
   {
     path:"/login", element: <Login />
+  },
+  {
+    path:"/forgotpassword", element: <Forgotpassword />
   }
 ])
 

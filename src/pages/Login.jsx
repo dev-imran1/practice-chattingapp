@@ -7,22 +7,42 @@ import './reglog.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const auth = getAuth();
+  const provider = new GoogleAuthProvider();
 
+  
   const handelRegistration = () => {
     // navigate("/login")
   }
+
+  const handelGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result)
+      }).catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        console.log(errorMessage)
+      });
+  }
+
+  const handelForgotpassword = () => {
+    navigate("/forgotpassword")
+  }
+
   return (
     <div>
       <Grid container >
         <Grid item xs={6}>
           <div className='regContainer'>
-            <Heading  clasName="header__reg" title="Get started with easily register" />
+            <Heading clasName="header__reg" title="Get started with easily register" />
             <div>
-              <img className='google' src={Google} alt="" />
+              <img onClick={handelGoogle} className='google' src={Google} alt="" />
             </div>
             <div className='regInput'>
               <TextField id="outlined-basic" label="email" variant="outlined" />
@@ -31,7 +51,8 @@ const Login = () => {
               <TextField id="outlined-basic" label="password" variant="outlined" />
             </div>
             <Button onClick={handelRegistration} variant="contained">Log in</Button>
-            <p><Link to='/'>got to reg page</Link></p>
+            <p>Don't have an account? <Link to='/'>Registration</Link></p>
+            <p className='forgot' onClick={handelForgotpassword}>Forgot Password?</p>
           </div>
 
         </Grid>

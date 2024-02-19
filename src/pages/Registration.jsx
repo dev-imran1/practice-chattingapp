@@ -5,10 +5,13 @@ import regimg from '../assets/regimg.png';
 import './reglog.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { toast } from 'react-toastify'
 import LoadingButton from '@mui/lab/LoadingButton';
+import { AiOutlineEyeInvisible, AiTwotoneEye } from "react-icons/ai";
+import Alert from '@mui/material/Alert';
+
 
 
 
@@ -23,57 +26,86 @@ const Registration = () => {
     email: "",
     fullname: "",
     password: "",
-    loading: false
+    loading: false,
+    eye: false,
+    error: ""
   }
-  // let errors ={
-  //   mailError: "",
-  //   nameError: "",
-  //   passwordError:""
-  // }
+
+  // console.log(error)
 
   let [values, setValues] = useState(initialvalues);
   let [emailError, setEmailError] = useState("")
 
   const handelChange = (e) => {
-    ;
+
     setValues({
       ...values,
       [e.target.name]: e.target.value
     })
   }
   const handelRegistration = () => {
-    setValues({
-      loading:true
-    })
     let { email, fullname, password } = values;
+
+    if (!email) {
+      setValues({
+        ...values,
+        error: "Type Your Email"
+      })
+      return
+    }
+    if (!fullname) {
+      setValues({
+        ...values,
+        error: "Type Your fullname"
+      })
+      return
+    }
+    if (!password) {
+      setValues({
+        ...values,
+        error: "Type Your password"
+      })
+      return
+    }
+
+
+    setValues({
+      loading: true
+    })
     createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        toast("verify your email")
+        sendEmailVerification(auth.currentUser)
+          .then(() => {
+            toast("verify your email")
+          })
         setValues({
           email: "",
           fullname: "",
-          password: ""
+          password: "",
+          loading: false
         })
-
-        // setEmailError({
-        //   mailError: "",
-        //   nameError: "",
-        //   passwordError:""
-        // })
         setEmailError("");
-        setValues({
-          loading:false
-        })
         navigate("/login")
       })
       .catch((error) => {
+        setValues({
+          loading: false
+        })
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorCode == 'auth/email-already-in-use') {
           setEmailError('your email already exits')
         }
       });
+    console.log(values)
   }
+
+  // const handleEye =()=>{
+  //   setValues({
+  //     ...values,
+  //     eye:true
+  //   })
+  // }
   return (
     <div>
       <Grid container >
@@ -81,18 +113,28 @@ const Registration = () => {
           <div className='regContainer'>
             <Heading clasName="header__reg" title="Get started with easily register" />
             <p>Free register and you can enjoy it</p>
+
             <div className='regInput'>
               <TextField value={values.email} onChange={handelChange} name='email' id="outlined-basic" label="email" variant="outlined" />
-              {emailError &&
-                <h4>{emailError}</h4>
-              }
+              {values.error.includes("email") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
               <TextField value={values.fullname} onChange={handelChange} name='fullname' id="outlined-basic" label="full name" variant="outlined" />
+              {values.error.includes("fullname") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
-              <TextField value={values.password} onChange={handelChange} name='password' id="outlined-basic" label="password" variant="outlined" type='password' />
+              <TextField value={values.password} onChange={handelChange} name='password' id="outlined-basic" label="password" variant="outlined" type={values.eye ? "text" : "password"} />
+              {values.error.includes("password") && <Alert severity="warning">{values.error}</Alert>}
+              <div onClick={() => setValues({ ...values, eye: !values.eye })} className='eye'>
+                {values.eye
+                  ?
+                  <AiTwotoneEye />
+                  :
+                  <AiOutlineEyeInvisible />
+                }
+              </div>
             </div>
+
             {values.loading
               ?
               <LoadingButton loading variant="outlined">
@@ -101,8 +143,9 @@ const Registration = () => {
               :
               <Button onClick={handelRegistration} variant="contained">Sign up</Button>
             }
-          </div>
 
+            <p>Already have an account? <Link to='/login'>Log in</Link></p>
+          </div>
         </Grid>
         <Grid item xs={6}>
           <img className='reg_img' src={regimg} alt="" />
