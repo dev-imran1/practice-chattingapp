@@ -10,6 +10,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import Alert from '@mui/material/Alert';
 import { toast } from 'react-toastify';
+import { BsEmojiGrin } from "react-icons/bs";
+import { BsEmojiFrownFill } from "react-icons/bs";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ const Login = () => {
   }
 
   let [values, setValues] = useState(initialvalues);
+  let [open, setOpen] = useState("");
 
   const handelChange = (e) => {
     setValues({
@@ -35,14 +39,14 @@ const Login = () => {
 
   const handelRegistration = () => {
     let { email, password } = values
-    if(!email){
+    if (!email) {
       setValues({
         ...values,
         error: "type your email"
       })
       return
     }
-    if(!password){
+    if (!password) {
       setValues({
         ...values,
         error: "type your password"
@@ -52,7 +56,7 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
         toast("account login done")
-        navigate("/home")
+        navigate("/chatting/home")
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -114,7 +118,13 @@ const Login = () => {
               {values.error.includes("disabled") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
-              <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" />
+              <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" type={open ? "text" : "password"}/>
+              {open
+              ?
+                <BsEmojiGrin className='eye_login' onClick={()=>setOpen(false)}/>
+                :
+                <BsEmojiFrownFill className='eye_login' onClick={()=>setOpen(true)}/>
+              }
               {values.error.includes("Password") && <Alert severity="warning">{values.error}</Alert>}
               {values.error.includes("password") && <Alert severity="warning">{values.error}</Alert>}
             </div>
