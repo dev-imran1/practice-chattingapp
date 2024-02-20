@@ -35,6 +35,20 @@ const Login = () => {
 
   const handelRegistration = () => {
     let { email, password } = values
+    if(!email){
+      setValues({
+        ...values,
+        error: "type your email"
+      })
+      return
+    }
+    if(!password){
+      setValues({
+        ...values,
+        error: "type your password"
+      })
+      return
+    }
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
         toast("account login done")
@@ -95,12 +109,14 @@ const Login = () => {
             </div>
             <div className='regInput'>
               <TextField name='email' onChange={handelChange} id="outlined-basic" label="email" variant="outlined" />
+              {values.error.includes("Email") && <Alert severity="warning">{values.error}</Alert>}
               {values.error.includes("email") && <Alert severity="warning">{values.error}</Alert>}
               {values.error.includes("disabled") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
               <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" />
               {values.error.includes("Password") && <Alert severity="warning">{values.error}</Alert>}
+              {values.error.includes("password") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <Button onClick={handelRegistration} variant="contained">Log in</Button>
             <p>Don't have an account? <Link to='/'>Registration</Link></p>
