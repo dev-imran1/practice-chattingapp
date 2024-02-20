@@ -34,19 +34,37 @@ const Login = () => {
   }
 
   const handelRegistration = () => {
-    let { email, password } = values;
+    let { email, password } = values
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        console.log(user)
-      })
-      navigate("/home")
-      .catch((error) => {
+        toast("account login done")
+        navigate("/home")
+      }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+
+        console.log(errorMessage)
+        console.log(errorCode)
+        if (errorCode == "auth/invalid-credential") {
+          setValues({
+            ...values,
+            password: "",
+            error: "Invalid Password"
+          })
+          return
+        }
         if (errorCode == "auth/invalid-email") {
           setValues({
             ...values,
+            email: "",
             error: "Invalid Email"
+          })
+          return
+        }
+        if (errorCode == "auth/too-many-requests") {
+          setValues({
+            ...values,
+            error: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
           })
         }
       });
@@ -59,8 +77,6 @@ const Login = () => {
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode)
-        console.log(errorMessage)
       });
   }
 
@@ -78,13 +94,13 @@ const Login = () => {
               <img onClick={handelGoogle} className='google' src={Google} alt="" />
             </div>
             <div className='regInput'>
-              <TextField onChange={handelChange} id="outlined-basic" label="email" variant="outlined" />
-              {values.error && <Alert severity="warning">{values.error}</Alert>}
-
-
+              <TextField name='email' onChange={handelChange} id="outlined-basic" label="email" variant="outlined" />
+              {values.error.includes("email") && <Alert severity="warning">{values.error}</Alert>}
+              {values.error.includes("disabled") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
-              <TextField onChange={handelChange} id="outlined-basic" label="password" variant="outlined" />
+              <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" />
+              {values.error.includes("Password") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <Button onClick={handelRegistration} variant="contained">Log in</Button>
             <p>Don't have an account? <Link to='/'>Registration</Link></p>

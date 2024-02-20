@@ -12,15 +12,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { AiOutlineEyeInvisible, AiTwotoneEye } from "react-icons/ai";
 import Alert from '@mui/material/Alert';
 
-
-
-
 const Registration = () => {
-
-
   const auth = getAuth();
   const navigate = useNavigate();
-
 
   let initialvalues = {
     email: "",
@@ -30,8 +24,6 @@ const Registration = () => {
     eye: false,
     error: ""
   }
-
-  // console.log(error)
 
   let [values, setValues] = useState(initialvalues);
   // let [emailError, setEmailError] = useState("")
