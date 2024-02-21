@@ -14,18 +14,16 @@ import Profileimg from '../assets/profile.png'
 
 const RootLayOuts = () => {
     const location = useLocation();
-
-    console.log(location.pathname);
     return (
         <div>
             <Grid container spacing={0}>
                 <Grid item xs={2}>
                     <div className='navbar'>
                         <div className="nav__wrapper">
-                            {/* <div >
-                            </div> */}
                             <ul className='root__item'>
-                                <img className="profile_img" src={Profileimg} alt="" />
+                                <div className="profile__image">
+                                    <img className="profile_img" src={Profileimg} alt="" />
+                                </div>
                                 <li>
                                     <Link to='/chatting/home' className={location.pathname == '/chatting/home' ? "active" : "icon"}>
                                         <IoHomeOutline />
