@@ -7,6 +7,9 @@ import Grid from '@mui/material/Grid';
 import Group from '../component/groupList/Group';
 import Friends from '../component/friends/Friends';
 import UserList from '../component/userlist/UserList';
+import BlockList from '../component/block/BlockList';
+import FriendRequest from '../component/frequest/FriendRequest';
+import MyGroup from '../component/mygroup/MyGroup';
 
 
 const Home = () => {
@@ -36,6 +39,15 @@ const Home = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <UserList />
+                </Grid>
+                <Grid item xs={4}>
+                    <BlockList />
+                </Grid>
+                <Grid item xs={4}>
+                    <FriendRequest />
+                </Grid>
+                <Grid item xs={4}>
+                    <MyGroup />
                 </Grid>
             </Grid>
         </div>
