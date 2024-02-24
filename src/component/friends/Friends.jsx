@@ -9,7 +9,6 @@ const Friends = () => {
       <h3>Friends</h3>
     </div>
     <div className='item__wrapper'>
-        {[0,1,2,3,4,5,6].map(()=>(
       <div className='item'>
         <div className="profile__picture">
           <img src={profileimg} alt="" />
@@ -20,10 +19,8 @@ const Friends = () => {
         </div>
         <div className="Request__btn">
         <Button variant="contained">add</Button>
-
         </div>
       </div>
-        ))}
       </div>
   </div>
   )

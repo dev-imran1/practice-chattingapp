@@ -6,15 +6,17 @@ import './reglog.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { toast } from 'react-toastify'
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AiOutlineEyeInvisible, AiTwotoneEye } from "react-icons/ai";
 import Alert from '@mui/material/Alert';
+import { getDatabase, ref, set, push } from "firebase/database";
 
 const Registration = () => {
   const auth = getAuth();
   const navigate = useNavigate();
+  const db = getDatabase();
 
   let initialvalues = {
     email: "",
@@ -66,10 +68,22 @@ const Registration = () => {
     })
     createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        sendEmailVerification(auth.currentUser)
-          .then(() => {
-            toast("verify your email")
-          })
+        updateProfile(auth.currentUser, {
+          displayName: values.fullname, photoURL: "https://ibb.co/k2hMw50"
+        }).then(() => {
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              set(push(ref(db, 'users')), {
+                username: values.fullname,
+                email: values.email,
+                profile_picture : user.user.photoURL
+              })
+              toast("verify your email")
+            })
+        })
+
+
+
         setValues({
           email: "",
           fullname: "",
@@ -84,9 +98,9 @@ const Registration = () => {
         })
         const errorCode = error.code;
         const errorMessage = error.message;
-        if (errorCode == 'auth/email-already-in-use') {
-          setEmailError('your email already exits')
-        }
+        // if (errorCode == 'auth/email-already-in-use') {
+        //   setEmailError('your email already exits')
+        // }
       });
     console.log(values)
   }
