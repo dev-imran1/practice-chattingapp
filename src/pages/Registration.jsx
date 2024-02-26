@@ -73,7 +73,8 @@ const Registration = () => {
         }).then(() => {
           sendEmailVerification(auth.currentUser)
             .then(() => {
-              set(push(ref(db, 'users')), {
+              console.log(user);
+              set(ref(db, 'users/' + user.user.uid), {
                 username: values.fullname,
                 email: values.email,
                 profile_picture : user.user.photoURL
