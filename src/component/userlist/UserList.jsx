@@ -4,8 +4,12 @@ import profileimg from '../../assets/profile3.png'
 import { Button } from '@mui/material'
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
+import { useSelector } from 'react-redux';
 
 const UserList = () => {
+
+  let userData = useSelector((state) => state.logedUser.loginUser)
+
   const auth = getAuth();
   const db = getDatabase();
   let [userlist, setUserList] = useState([]);
@@ -18,9 +22,11 @@ const UserList = () => {
     onValue(userRef, (snapshot) => {
       const data = [];
       snapshot.forEach((item) => {
-        data.push({ ...item.val(), id: item.key })
+        if(userData.uid != item.key){
+          data.push({ ...item.val(), id: item.key })
+        }
       })
-      setUserList(data)
+      setUserList(data);
     });
   }, []);
 

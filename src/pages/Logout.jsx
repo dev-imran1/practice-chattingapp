@@ -7,16 +7,21 @@ import { Link, useNavigate } from 'react-router-dom';
 const Logout = () => {
   const auth = getAuth();
   const navigate = useNavigate();
+
+
+
   let handelLogOut = () => {
     signOut(auth).then(() => {
+      localStorage.removeItem("imran")
       toast("Your account logout");
       setTimeout(() => {
         navigate("/login")
       }, 1000)
-    }).catch((error) => {
-      // An error happened.
-    });
+    })
   }
+
+
+  
   return (
 
     <div>

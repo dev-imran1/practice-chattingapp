@@ -1,16 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const counterSlice = createSlice({
-  name: 'user',
+  name: "data",
   initialState: {
-    loginUser: null,
+    loginUser: localStorage.getItem("imran") ? JSON.parse(localStorage.getItem("imran")) :null ,
   },
   reducers: {
-    userdata: (state) => {
-      console.log("redex")
+    userdata: (state, action) => {
+      state.loginUser = action.payload;
     },
   },
-})
-export const { userdata } = counterSlice.actions
+});
+export const { userdata } = counterSlice.actions;
 
-export default counterSlice.reducer
+export default counterSlice.reducer;

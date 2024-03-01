@@ -70,10 +70,10 @@ const Registration = () => {
       .then((user) => {
         updateProfile(auth.currentUser, {
           displayName: values.fullname, photoURL: "https://ibb.co/k2hMw50"
-        }).then(() => {
+        })
+        .then(() => {
           sendEmailVerification(auth.currentUser)
             .then(() => {
-              console.log(user);
               set(ref(db, 'users/' + user.user.uid), {
                 username: values.fullname,
                 email: values.email,
@@ -103,7 +103,6 @@ const Registration = () => {
         //   setEmailError('your email already exits')
         // }
       });
-    console.log(values)
   }
 
   // const handleEye =()=>{

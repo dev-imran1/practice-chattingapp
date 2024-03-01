@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Heading from '../component/Heading'
 import Logimg from '../assets/login.png';
 import Google from '../assets/google.png';
@@ -12,13 +12,23 @@ import Alert from '@mui/material/Alert';
 import { toast } from 'react-toastify';
 import { BsEmojiGrin } from "react-icons/bs";
 import { BsEmojiFrownFill } from "react-icons/bs";
+import { userdata } from '../slice/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+  // let loginUser = useSelector((state => state.logedUser.loginUser));
 
+
+  // useEffect(() => {
+  //   if (loginUser == null) {
+  //     navigate("/login")
+  //   }
+  // }, [])
   let initialvalues = {
     email: "",
     password: "",
@@ -31,6 +41,7 @@ const Login = () => {
   let [open, setOpen] = useState("");
 
   const handelChange = (e) => {
+
     setValues({
       ...values,
       [e.target.name]: e.target.value
@@ -39,6 +50,7 @@ const Login = () => {
 
   const handelRegistration = () => {
     let { email, password } = values
+
     if (!email) {
       setValues({
         ...values,
@@ -56,13 +68,12 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
         toast("account login done")
+        dispatch(userdata(user.user))
+        localStorage.setItem("imran", JSON.stringify(user.user))
         navigate("/chatting/home")
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-
-        console.log(errorMessage)
-        console.log(errorCode)
         if (errorCode == "auth/invalid-credential") {
           setValues({
             ...values,
@@ -91,7 +102,6 @@ const Login = () => {
   const handelGoogle = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
-        console.log(result)
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -118,12 +128,12 @@ const Login = () => {
               {values.error.includes("disabled") && <Alert severity="warning">{values.error}</Alert>}
             </div>
             <div className='regInput'>
-              <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" type={open ? "text" : "password"}/>
+              <TextField name='password' onChange={handelChange} id="outlined-basic" label="password" variant="outlined" type={open ? "text" : "password"} />
               {open
-              ?
-                <BsEmojiGrin className='eye_login' onClick={()=>setOpen(false)}/>
+                ?
+                <BsEmojiGrin className='eye_login' onClick={() => setOpen(false)} />
                 :
-                <BsEmojiFrownFill className='eye_login' onClick={()=>setOpen(true)}/>
+                <BsEmojiFrownFill className='eye_login' onClick={() => setOpen(true)} />
               }
               {values.error.includes("Password") && <Alert severity="warning">{values.error}</Alert>}
               {values.error.includes("password") && <Alert severity="warning">{values.error}</Alert>}

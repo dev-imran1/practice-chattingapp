@@ -8,11 +8,13 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineLogout } from "react-icons/ai";
 import Profileimg from '../assets/profile.png'
+import { useSelector } from 'react-redux';
 
 
 
 
 const RootLayOuts = () => {
+    let userData = useSelector((state) => state.logedUser.loginUser)
     const location = useLocation();
     return (
         <div>
@@ -23,6 +25,7 @@ const RootLayOuts = () => {
                             <ul className='root__item'>
                                 <div className="profile__image">
                                     <img className="profile_img" src={Profileimg} alt="" />
+                                    <h2>{userData.displayName}</h2>
                                 </div>
                                 <li>
                                     <Link to='/chatting/home' className={location.pathname == '/chatting/home' ? "active" : "icon"}>
