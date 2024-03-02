@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 const UserList = () => {
 
   let userData = useSelector((state) => state.logedUser.loginUser)
-
+console.log(userData.uid)
   const auth = getAuth();
   const db = getDatabase();
   let [userlist, setUserList] = useState([]);
@@ -43,6 +43,7 @@ const UserList = () => {
 
   // bujte parchi
   let handelFrequest = (item) => {
+    // console.log(item)
     set(ref(db, 'friendRequest/'+item.id), {
       whosendid: auth.currentUser.uid,
       whosendname: auth.currentUser.displayName,

@@ -25,7 +25,7 @@ const RootLayOuts = () => {
                             <ul className='root__item'>
                                 <div className="profile__image">
                                     <img className="profile_img" src={Profileimg} alt="" />
-                                    <h2>{userData.displayName}</h2>
+                                    <h2>{userData?.displayName}</h2>
                                 </div>
                                 <li>
                                     <Link to='/chatting/home' className={location.pathname == '/chatting/home' ? "active" : "icon"}>

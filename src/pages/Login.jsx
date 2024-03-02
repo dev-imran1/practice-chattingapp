@@ -67,10 +67,14 @@ const Login = () => {
     }
     signInWithEmailAndPassword(auth, email, password)
       .then((user) => {
-        toast("account login done")
-        dispatch(userdata(user.user))
-        localStorage.setItem("imran", JSON.stringify(user.user))
-        navigate("/chatting/home")
+        if(user.user.emailVerified){
+          toast("account login done")
+          dispatch(userdata(user.user))
+          localStorage.setItem("imran", JSON.stringify(user.user))
+          navigate("/chatting/home")
+        }else{
+          toast("email not verify")
+        }
       }).catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

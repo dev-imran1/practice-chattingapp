@@ -1,5 +1,5 @@
-import { Box, Grid } from '@mui/material'
 import React, { useState } from 'react'
+import { Box, Grid } from '@mui/material'
 import Heading from '../component/Heading'
 import regimg from '../assets/regimg.png';
 import './reglog.css';
@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { AiOutlineEyeInvisible, AiTwotoneEye } from "react-icons/ai";
 import Alert from '@mui/material/Alert';
@@ -28,62 +28,68 @@ const Registration = () => {
   }
 
   let [values, setValues] = useState(initialvalues);
-  // let [emailError, setEmailError] = useState("")
+  let { email, fullname, password } = values;
+  let [emailError, setEmailError] = useState("")
+  let [fullnameError, setfullnameError] = useState("")
+  let [passwordlError, setpasswordlError] = useState("")
 
   const handelChange = (e) => {
-
     setValues({
       ...values,
       [e.target.name]: e.target.value
     })
+    if (e.target.name == "fullname") {
+      setfullnameError("")
+    }
+    if (e.target.name == "email") {
+      setEmailError("")
+    }
+    if (e.target.name == "password") {
+      setpasswordlError("")
+    }
   }
   const handelRegistration = () => {
-    let { email, fullname, password } = values;
+    setValues({
+      loading: false,
+      email: "",
+      fullname: "",
+      password: ""
+    })
 
     if (!email) {
-      setValues({
-        ...values,
-        error: "Type Your email"
-      })
-      return
+      setEmailError("please enter your email")
     }
     if (!fullname) {
-      setValues({
-        ...values,
-        error: "Type Your fullname"
-      })
-      return
+      setfullnameError("Enter Your Full Name")
     }
     if (!password) {
-      setValues({
-        ...values,
-        error: "Type Your password"
-      })
-      return
-    }
+      setpasswordlError("Enter Your Password")
+    } else {
 
+      if (fullname) {
+        setfullnameError("")
+      }
+      if (email) {
+        setEmailError("")
+      }
+      if (password) {
+        setpasswordlError("")
+      }
 
-    setValues({
-      loading: true
-    })
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((user) => {
+      createUserWithEmailAndPassword(auth, email, password).then((user) => {
         updateProfile(auth.currentUser, {
           displayName: values.fullname, photoURL: "https://ibb.co/k2hMw50"
-        })
-        .then(() => {
+        }).then(() => {
           sendEmailVerification(auth.currentUser)
             .then(() => {
               set(ref(db, 'users/' + user.user.uid), {
                 username: values.fullname,
                 email: values.email,
-                profile_picture : user.user.photoURL
+                profile_picture: user.user.photoURL
               })
               toast("verify your email")
             })
         })
-
-
 
         setValues({
           email: "",
@@ -93,24 +99,19 @@ const Registration = () => {
         })
         navigate("/login")
       })
-      .catch((error) => {
-        setValues({
-          loading: false
-        })
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // if (errorCode == 'auth/email-already-in-use') {
-        //   setEmailError('your email already exits')
-        // }
-      });
+        .catch((error) => {
+          setValues({
+            loading: false
+          })
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          if (errorCode == 'auth/email-already-in-use') {
+            setEmailError('your email already exits')
+          }
+        });
+    }
   }
 
-  // const handleEye =()=>{
-  //   setValues({
-  //     ...values,
-  //     eye:true
-  //   })
-  // }
   return (
     <div>
       <Grid container >
@@ -121,15 +122,17 @@ const Registration = () => {
 
             <div className='regInput'>
               <TextField value={values.email} onChange={handelChange} name='email' id="outlined-basic" label="email" variant="outlined" />
-              {values.error.includes("email") && <Alert severity="warning">{values.error}</Alert>}
+              {emailError && <Alert severity="warning">{emailError}</Alert>}
+
             </div>
             <div className='regInput'>
               <TextField value={values.fullname} onChange={handelChange} name='fullname' id="outlined-basic" label="full name" variant="outlined" />
-              {values.error.includes("fullname") && <Alert severity="warning">{values.error}</Alert>}
+              {fullnameError && <Alert severity="warning">{fullnameError}</Alert>}
             </div>
             <div className='regInput'>
+
               <TextField value={values.password} onChange={handelChange} name='password' id="outlined-basic" label="password" variant="outlined" type={values.eye ? "text" : "password"} />
-              {values.error.includes("password") && <Alert severity="warning">{values.error}</Alert>}
+              {passwordlError && <Alert severity="warning">{passwordlError}</Alert>}
               <div onClick={() => setValues({ ...values, eye: !values.eye })} className='eye'>
                 {values.eye
                   ?
