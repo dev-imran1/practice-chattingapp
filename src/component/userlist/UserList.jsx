@@ -40,10 +40,8 @@ const UserList = () => {
       setFriendrequest(arr)
     });
   }, [])
-
-  // console.log(auth.currentUser.photoURL)
+  
   let handelFrequest = (item) => {
-    console.log(item);
     set(ref(db, 'friendRequest/' + item.id), {
       whosendid: auth.currentUser.uid,
       whosendname: auth.currentUser.displayName,
@@ -80,10 +78,13 @@ const UserList = () => {
             <div className="Request__btn">
               {friendrequest.includes(item.id + auth.currentUser.uid)
                 ?
-                <Button onClick={() => handelCancel(item)} variant="contained">-</Button>
+                <Button onClick={() => handelCancel(item)} variant="contained">Cancel</Button>
                 :
-                <Button onClick={() => handelFrequest(item)} variant="contained">send</Button>
+                <Button onClick={() => handelFrequest(item)} variant="contained">Friend Request</Button>
               }
+              {console.log(item.id)}
+              {console.log(item.id + userData.uid)}
+              {console.log( userData.uid + item.id)}
             </div>
           </div>
         </div>

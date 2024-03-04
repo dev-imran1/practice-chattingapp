@@ -25,7 +25,11 @@ const RootLayOuts = () => {
                             <ul className='root__item'>
                                 <div className="profile__image">
                                     <img className="profile_img" src={Profileimg} alt="" />
+                                    <div>
                                     <h2>{userData?.displayName}</h2>
+                                    <p>{userData?.email}</p>
+                                    {/* <p>{userData?.uid}</p> */}
+                                    </div>
                                 </div>
                                 <li>
                                     <Link to='/chatting/home' className={location.pathname == '/chatting/home' ? "active" : "icon"}>
@@ -51,7 +55,6 @@ const RootLayOuts = () => {
                                 </li>
                                 <li>
                                     <Link to='/chatting/logout' className={location.pathname == '/chatting/logout' ? "active" : "icon"}>
-
                                         <AiOutlineLogout />
                                     </Link>
                                 </li>
