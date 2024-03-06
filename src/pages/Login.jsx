@@ -21,14 +21,14 @@ const Login = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
-  // let loginUser = useSelector((state => state.logedUser.loginUser));
+  let loginUser = useSelector((state => state.logedUser.loginUser));
 
 
-  // useEffect(() => {
-  //   if (loginUser == null) {
-  //     navigate("/login")
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (loginUser == null) {
+      navigate("/login")
+    }
+  }, [])
   let initialvalues = {
     email: "",
     password: "",

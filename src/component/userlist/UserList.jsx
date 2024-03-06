@@ -64,7 +64,9 @@ const UserList = () => {
       <div className='title__userlist'>
         <h3>UserList</h3>
       </div>
-      {userlist.map((item, index) => (
+      {userlist && userlist.length > 0
+      ?
+      userlist.map((item, index) => (
         <div className='item__wrapper' key={index}>
           <div className='item' >
             <div className="profile__picture">
@@ -82,13 +84,17 @@ const UserList = () => {
                 :
                 <Button onClick={() => handelFrequest(item)} variant="contained">Friend Request</Button>
               }
-              {console.log(item.id)}
-              {console.log(item.id + userData.uid)}
-              {console.log( userData.uid + item.id)}
+{/* 
+              // {console.log(item.id)}
+              // {console.log(item.id + userData.uid)}
+              // {console.log( userData.uid + item.id)} */}
             </div>
           </div>
         </div>
-      ))}
+      ))
+    :
+        <h3 className='no_friende'>No User Available</h3>
+    }
       <div>
       </div>
     </div>

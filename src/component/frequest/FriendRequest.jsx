@@ -31,16 +31,12 @@ const FriendRequest = () => {
 
 
   let handelFriend = (friend) => {
-    console.log(friend.id)
+    // console.log(friend.id)
     set(ref(db, 'friends/' + friend.id), {
       ...friend,
-        // whosendername: friend.whosendname,
-        // whosenderid: friend.whosendid,
-        // whoreciverid:userData.uid,
-        // whorecivername:userData.displayName
     }).then(()=>{
       remove(ref(db, 'friendRequest/' + friend.id)).then(() => {
-        toast("friends Done");
+        toast("friend Done");
       })
     })
   }
@@ -61,7 +57,7 @@ const FriendRequest = () => {
           <div key={index} className='item__wrapper'>
             <div className='item'>
               <div className="profile__picture">
-                {/* <img src={console.log(item)} alt="" /> */}
+                {/* <img src={console.log(item.whosendname)} alt="" /> */}
                 <img src={item.whosendimg} alt="" />
               </div>
               <div className="profile__details">
@@ -76,7 +72,7 @@ const FriendRequest = () => {
           </div>
         ))
         :
-        <h3 className='no_friende'>No Friend Available</h3>
+        <h3 className='no_friende'>No Friend Request</h3>
       }
     </div>
   )
