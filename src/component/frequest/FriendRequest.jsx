@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import '../groupList/group.css'
-import profileimg from '../../assets/profile2.png'
+import '../groupList/group.css';
 import { Button } from '@mui/material'
-// import { getDatabase, onValue, ref } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -32,7 +30,7 @@ const FriendRequest = () => {
 
   let handelFriend = (friend) => {
     // console.log(friend.id)
-    set(ref(db, 'friends/' + friend.id), {
+    set(push(ref(db, 'friends/') ), {
       ...friend,
     }).then(()=>{
       remove(ref(db, 'friendRequest/' + friend.id)).then(() => {
@@ -57,7 +55,6 @@ const FriendRequest = () => {
           <div key={index} className='item__wrapper'>
             <div className='item'>
               <div className="profile__picture">
-                {/* <img src={console.log(item.whosendname)} alt="" /> */}
                 <img src={item.whosendimg} alt="" />
               </div>
               <div className="profile__details">
