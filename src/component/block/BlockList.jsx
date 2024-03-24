@@ -21,7 +21,7 @@ const BlockList = () => {
     onValue(friendRef, (snapshot) => {
       const data = [];
       snapshot.forEach((item) => {
-        if (item.val().whoreciveid == userData.uid || item.val().whosendid == userData.uid) {
+        if (item.val().blockedid == userData.uid || item.val().blockbyid == userData.uid) {
           data.push({ ...item.val(), id: item.key })
         }
       })
@@ -47,10 +47,20 @@ const BlockList = () => {
             <div key={index} className='item__wrapper'>
               <div className='item'>
                 <div className="profile__picture">
-                  <img src={console.log(items)} alt="" />
+                  {items.blockbyid == userData.uid
+                  ?
+                  <img src={items.blockbyimg} alt="" />
+                  :
+                  <img src={items.blockedimg} alt="" />
+                }
                 </div>
                 <div className="profile__details">
-                  <h3 className='profile__details-name'>{items.whosendname}</h3>
+                  {items.blockedid == userData.uid
+                  ?
+                  <h3 className='profile__details-name'>{items.blockbyname}</h3>
+                  :
+                  <h3 className='profile__details-name'>{items.blockedname}</h3>
+                }
                   <p className='profile__details-proffsion'>Web Devloper</p>
                 </div>
                 <div className="Request__btn">

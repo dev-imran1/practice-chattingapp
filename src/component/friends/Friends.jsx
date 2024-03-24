@@ -4,7 +4,6 @@ import profileimg from '../../assets/profile2.png'
 import { Button } from '@mui/material';
 import { getAuth } from "firebase/auth";
 import { useSelector } from 'react-redux';
-// import { toast } from 'react-toastify';
 import { getDatabase, ref, set, push, onValue, remove } from "firebase/database";
 import { toast } from 'react-toastify';
 
@@ -27,19 +26,42 @@ const Friends = () => {
     });
   }, []);
 
-  let handelBlock =(item)=>{
+  let handelBlock = (item) => {
     console.log(item)
-    // console.log('blok')
-    set(ref(db, 'block/' + item.id), {
-      ...item,
-    })
-    .then(()=>{
-      remove(ref(db, 'friends/' + item.id)).then(() => {
-        toast("Block Done");
+    if(item.whoreciveid == userData.uid){
+      set(ref(db, 'block/' + item.id), {
+        blockedname:item.whorecivename,
+        blockedid:item.whoreciveid,
+        blockedname:item.whorecivename,
+        blockbyid: item.whosendid,
+        blockbyimg:item.whosendimg,
+        blockbyname:item.whosendname,
+      }).then(() => {
+        remove(ref(db, 'friends/' + item.id)).then(() => {
+          toast("Block Done");
+        })
       })
-    })
+    }else{
+        set(ref(db, 'block/' + item.id), {
+          blockedname:item.whosendname,
+          blockedid:item.whosendid,
+          blockedimg:item.whosendimg,
+          blockbyname:item.whorecivename,
+          blockbyid: item.whoreciveid,
+          blockbyimg:item.whoreciveimg
+        }).then(() => {
+          remove(ref(db, 'friends/' + item.id)).then(() => {
+            toast("Block Done");
+          })
+        })
+    }
   }
 
+  let handelUnfriend = (item) => {
+    remove(ref(db, 'friends/' + item.id)).then(() => {
+      toast("Unfriend Done");
+    })
+  }
   return (
     <div className='manin__box'>
       <div className='title_friends'>
@@ -54,12 +76,22 @@ const Friends = () => {
                 <img src={item.whosendimg} alt="" />
               </div>
               <div className="profile__details">
-                <h3 className='profile__details-name'>{item.whosendname}</h3>
-                <p className='profile__details-proffsion'>{item.whosendid}</p>
+                {item.whoreciveid == userData.uid
+                  ?
+                  <h3 className='profile__details-name'>{item.whosendname}</h3>
+                  :
+                  <h3 className='profile__details-name'>{item.whorecivename}</h3>
+                }
+                {item.whoreciveid == userData.uid
+                  ?
+                  <p className='profile__details-proffsion'>{item.whosendid}</p>
+                  :
+                  <p className='profile__details-proffsion'>{item.whoreciveid}</p>
+                }
               </div>
               <div className="Request__btn">
-                <Button onClick={()=>handelBlock(item)} variant="contained">Block</Button>
-                {/* <Button variant="contained">add</Button> */}
+                <Button onClick={() => handelBlock(item)} variant="contained" color='error'>Block</Button>
+                <Button onClick={() => handelUnfriend(item)} variant="contained">Unfriend</Button>
               </div>
             </div>
           </div>
@@ -68,7 +100,7 @@ const Friends = () => {
         <h3 className='no_friende'>No Friend Available</h3>
       }
 
-    </div>
+    </div >
   )
 }
 
