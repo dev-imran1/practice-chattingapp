@@ -62,8 +62,8 @@ const FriendRequest = () => {
                 <p className='profile__details-proffsion'>{item.whosendid}</p>
               </div>
               <div className="Request__btn">
-                <Button onClick={() => handelFriend(item)} variant="contained">Accept</Button>
-                <Button onClick={() => handelFCancel(item)} variant="contained" color='error'>Cancel</Button>
+                <Button onClick={() => handelFriend(item)} variant="contained">+</Button>
+                <Button onClick={() => handelFCancel(item)} variant="contained" color='error'>X</Button>
               </div>
             </div>
           </div>

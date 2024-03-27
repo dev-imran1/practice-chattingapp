@@ -118,18 +118,20 @@ const UserList = () => {
                 {friends.includes(item.id)
                   ?
                   (<Button variant="contained">Friend</Button>)
-                  //  ( <Button onClick={() => handelCancel(item)} variant="contained">Cancel</Button>)
                   :
                   friendrequest.includes(item.id)
                     ?
-                    (<Button variant="contained">Pending...</Button>)
+                    ( 
+                      <>
+                    <Button className='add__btn' variant="contained">Pending...</Button>
+                      <Button className='add__btn'onClick={() => handelCancel(item)} variant="contained">-</Button>
+                    </>)
                     :
                     blocks.includes(item.id)
                       ?
                       (<Button variant="contained">Block</Button>)
                       :
                       (<Button onClick={() => handelFrequest(item)} variant="contained">Friend Request</Button>)
-
                 }
               </div>
             </div>
